@@ -99,6 +99,13 @@ return [
 
     'key' => env('APP_KEY'),
 
+    'new_api_key' => env('NEWS_API_KEY'),
+
+    'guardian_new_api_key' => env('GUARDIAN_NEWS_API_KEY'),
+
+    'new_york_times_api_key' => env('NEW_YORK_TIMES_API_KEY'),
+
+
     'previous_keys' => [
         ...array_filter(
             explode(',', env('APP_PREVIOUS_KEYS', ''))

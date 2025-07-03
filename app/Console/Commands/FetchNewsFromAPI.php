@@ -35,33 +35,45 @@ class FetchNewsFromAPI extends Command
         $language = 'en';
         $client = new Client();
         // The URL we want to send the GET request to
-        $url = 'https://newsapi.org/v2/everything?q='. $search_string . '&from=' . $from_date . '&to=' . $to_date . '&language=' . $language . '&apiKey=bdec8010568b46d5afd2d9a77225169f';
-        // Make the GET request
-        $response = $client->get($url);
-        $body = $response->getBody()->getContents();
-        $results = json_decode($body);
-        $total_count = $results->totalResults;
-        $page_size = 100;
-        $pages_count = 5; //round($total_count/$page_size) api throws error on multiple requests
+        $page_size = 50;
+        $pages_count = 3; //round($total_count/$page_size) api throws error on multiple requests
+        $data=[];
         for($current_page=1; $current_page<$pages_count; $current_page++){
-            $url = 'https://newsapi.org/v2/everything?q='. $search_string . '&from=' . $from_date . '&to=' . $to_date . '&language=' . $language . '&page=' . $current_page . '&apiKey=bdec8010568b46d5afd2d9a77225169f';
+            $news_api_url = 'https://newsapi.org/v2/everything?q='. $search_string . '&from=' . $from_date . '&to=' . $to_date . '&language=' . $language . '&pageSize=' . $page_size . '&page=' . $current_page . '&apiKey=' . config('app.new_api_key');
             // Make the GET request
-            $response = $client->get($url);
+            $response = $client->get($news_api_url);
             $body = $response->getBody()->getContents();
             $results = json_decode($body);
             foreach($results->articles as $article){
-                $news = new News();
-                $news->source = $article->source->name;
-                $news->author = $article->author;
-                $news->title = $article->title;
-                $news->description = $article->description;
-                $news->url = $article->url;
-                $news->urlToImage = $article->urlToImage;
-                $news->publishedAt = $article->publishedAt;
-                $news->content = $article->content;
-                $news->save();
+                $data[] = [
+                    'source' => $article->source->name,
+                    'author' => $article->author,
+                    'title' => $article->title,
+                    'description' => $article->description,
+                    'url' => $article->url,
+                    'urlToImage' => $article->urlToImage,
+                    'publishedAt' => $article->publishedAt,
+                    'content' => $article->content
+                ];
+            }
+            $guardian_news_api_url = 'https://content.guardianapis.com/search?q='. $search_string . '&from-date=' . $from_date . '&to-date=' . $to_date . '&lang=' . $language . '&show-tags=contributor' . '&page-size=' . $page_size . '&page=' . $current_page . '&show-fields=bodyText,byline,thumbnail' . '&api-key=' . config('app.guardian_new_api_key');
+            $response = $client->get($guardian_news_api_url);
+            $body = $response->getBody()->getContents();
+            $results = json_decode($body);
+            foreach($results->response->results as $article){
+                $data[] = [
+                    'source' => 'The Guardian',
+                    'author' => isset($article->fields->byline) ? $article->fields->byline : '',
+                    'title' => $article->webTitle,
+                    'description' => $article->webTitle,
+                    'url' => $article->webUrl,
+                    'urlToImage' => isset($article->fields->thumbnail) ? $article->fields->thumbnail : '',
+                    'publishedAt' => $article->webPublicationDate,
+                    'content' => $article->fields->bodyText
+                ];
             }
         }
+        News::insert($data);
         $this->info('News fetched successfully');
     }
 }
