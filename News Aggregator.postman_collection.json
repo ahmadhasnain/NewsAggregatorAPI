@@ -1,0 +1,270 @@
+{
+	"info": {
+		"_postman_id": "2fc9b54c-4e66-40a8-b032-cc2317e4ba01",
+		"name": "News Aggregator",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8011684"
+	},
+	"item": [
+		{
+			"name": "search news records",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/api/news/get?filters[authors][]=Mike Hohnen&filters[sources][]&page_size=20&current_page=1",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"news",
+						"get"
+					],
+					"query": [
+						{
+							"key": "filters[search]",
+							"value": "a",
+							"description": "search filter that seach the text in different fields",
+							"disabled": true
+						},
+						{
+							"key": "filters[authors][]",
+							"value": "Mike Hohnen",
+							"description": "authors array to filter news by authors"
+						},
+						{
+							"key": "filters[sources][]",
+							"value": null,
+							"description": "sources array to filter news by source"
+						},
+						{
+							"key": "page_size",
+							"value": "20",
+							"description": "page size for pagination"
+						},
+						{
+							"key": "current_page",
+							"value": "1",
+							"description": "current page"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get news authors",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:8000/api/news/authors/get",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"news",
+						"authors",
+						"get"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get news sources",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:8000/api/news/sources/get",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"news",
+						"sources",
+						"get"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user signup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "test123",
+							"type": "text"
+						},
+						{
+							"key": "first_name",
+							"value": "test",
+							"type": "text"
+						},
+						{
+							"key": "last_name",
+							"value": "123",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "test@123.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "abc123",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/api/user/signup",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"user",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user login",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "test123",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "abc123",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/api/user/login",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user logout",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|KKH3iZG4NkuVHHbrIUtoeFDngFqd8AEG1a3ePticf22c0ce7",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:8000/api/user/logout",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"user",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "run command using api",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:8000/api/artisan/app/fetch-news",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"artisan",
+						"app",
+						"fetch-news"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

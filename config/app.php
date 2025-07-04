@@ -105,6 +105,8 @@ return [
 
     'new_york_times_api_key' => env('NEW_YORK_TIMES_API_KEY'),
 
+    'g_news_api_key' => env('G_NEWS_API_KEY'),
+
 
     'previous_keys' => [
         ...array_filter(

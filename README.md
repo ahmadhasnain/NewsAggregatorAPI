@@ -1,61 +1,83 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## About Project
 
-## About Laravel
+This is the backend system for News Aggregator App made on laravel. This document will show the description of the project and how to run the project. 
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Steps
 
-## Learning Laravel
+- Create .env file in main folder and copy contents from .env.example
+- Enter database credentials (postgres or mysql) in .env file to connect with database.
+- Run 'php artisan optimize' to clear cache
+- Run 'php artisan migrate' to run the migrations
+- Run 'php artisan app:fetch-news' or use the api/artisan/app/fetch-news in postman to run the command that will fetch news from sources and fill in the database
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Apis
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+api.php file contains all the apis.
 
-## Laravel Sponsors
+#### api/user/signup (POST)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- This api is created for the signup of user which will create a user record in the database. Request validation class is also created for that route. 
 
-### Premium Partners
+#### api/user/login (POST)
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+- This api is created for the login of user which will match username and password and if user is found then return that user with the created access token. Request validation class is also created for that route. 
 
-## Contributing
+#### api/user/logout (GET)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- This api is created for the logout of user which will delete the current token of user and the user will logout.
 
-## Code of Conduct
+#### api/artisan/app/fetch-news (GET)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- This api is created if you want to run the command to fetch news from different sources using an api call.
 
-## Security Vulnerabilities
+#### api/news/sources/get (GET)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- This api is created to fetch the unique sources so using that sources list user can select any source from frontend and then the filters will be applied according to that.
 
-## License
+#### api/news/authors/get (GET)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- This api is created to fetch the unique authors so using that authors list user can select any author from frontend and then the filters will be applied according to that.
+
+#### api/news/get (GET)
+
+- This api is created to fetch the news based on author filter, source filter and search filter which will search the keyword in title, description and content.
+
+### Commands
+
+#### app:fetch-news 
+
+- This command will fetch news from different sources and then save it in the database in news table and is schedules to run daily.
+
+### Others
+
+#### Sanctum
+
+- Sanctum is used for token creating and authentication.
+
+#### ApiResponser
+
+- A trait is used that consists of 2 functions success and error which returns the json response. In the project this trait is used where we need to send the response either success or error.
+
+#### Exception Handling
+
+- Exception handling is done in bootstrap app.php where 500 and other exceptions are handled so that we don't need to add try catch everywhere.
+
+#### Postman
+
+- Postman requests collection for apis is attached if you want to test the apis using postman.
+
+#### Can Have
+
+- We can also use docker environment using docker files that will run the backend and database server.
+- For now i have not used the token middleware on news apis so that any one can test without the token and without signup and login.
+- We can also write unit test cases using PHPUnit
+- We can also use Cors and CSRF middlewares for security
+- We can also use php libraries for news_api, guardian_news_api and for other sources as well as the libraries for different languages are also available
+- We can also use Mongodb as it stores data in document form and also offers full text search
+
+
+
